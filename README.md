@@ -7,16 +7,6 @@ A GenAI-powered multi-agent system that lets you query retail sales data using n
 ![DuckDB](https://img.shields.io/badge/Data-DuckDB-yellow)
 ![LLM](https://img.shields.io/badge/LLM-OpenAI%20%7C%20Gemini-green)
 
-## Screenshots
-
-> Add your screenshots to the `screenshots/` folder and reference them here.
->
-> Example:
-> ```
-> ![Chat Interface](screenshots/chat_interface.png)
-> ![Summary Mode](screenshots/summary_mode.png)
-> ```
-
 ## Features
 
 - **Natural Language Queries** — Ask questions like "What are the top 10 products by revenue?"
@@ -85,8 +75,6 @@ LLM_PROVIDER=openai          # or "gemini"
 OPENAI_API_KEY=your_key_here
 # GOOGLE_API_KEY=your_key_here  # if using Gemini
 ```
-
-> ⚠️ **Never commit `.env` to git** — it's already in `.gitignore`.
 
 ### 3. Run
 
