@@ -45,6 +45,7 @@ myvenv/
 logs/
 
 # ─── Testing ───
+tests/
 .pytest_cache/
 .coverage
 htmlcov/
