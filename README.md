@@ -15,7 +15,7 @@ A GenAI-powered multi-agent system that lets you query retail sales data using n
 - **Multiple Formats** — CSV, Excel (.xlsx), JSON file support
 - **Smart Caching** — LRU cache for query results + LLM response caching
 - **Auto Error Recovery** — Retry logic with query reformulation on failures
-- **Dual LLM Support** — OpenAI (GPT-4) and Google Gemini
+- **Dual LLM Support** — OpenAI (GPT-5.2) and Google Gemini
 - **Optional RAG** — FAISS-based semantic search for retrieval-augmented generation
 
 ## Architecture
@@ -164,7 +164,7 @@ pytest tests/ --cov=src                 # With coverage
 |-----------|-----------|
 | UI | Streamlit |
 | Data Engine | DuckDB + Pandas |
-| LLM | OpenAI GPT-4 / Google Gemini |
+| LLM | OpenAI GPT-5.2 / Google Gemini |
 | Vector Store | FAISS (optional) |
 | Testing | pytest + Hypothesis |
 | Caching | LRU (query results + LLM responses) |
