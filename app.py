@@ -8,18 +8,14 @@ for interacting with the Retail Insights Assistant.
 """
 
 import streamlit as st
-import sys
 from pathlib import Path
 import pandas as pd
 from datetime import datetime
 import traceback
 
-# Add src to path
-sys.path.insert(0, str(Path(__file__).parent / "src"))
-
-from app_utils import create_orchestrator
-from models import Message
-from config import Config
+from src.utils.app_utils import create_orchestrator
+from src.core.models import Message
+from src.core.config import Config
 
 # Page configuration
 st.set_page_config(

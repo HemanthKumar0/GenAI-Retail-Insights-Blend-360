@@ -39,7 +39,7 @@ class LLMProvider(ABC):
         Initialize LLM provider.
         
         Args:
-            model: Model identifier (e.g., "gemini-pro", "gpt-4")
+            model: Model identifier (e.g., "gemini-3-pro-preview", "gpt-5.2")
             api_key: API key for authentication
             max_retries: Maximum number of retry attempts
         """
@@ -166,7 +166,7 @@ class LLMProvider(ABC):
 class GeminiProvider(LLMProvider):
     """Google Gemini API provider."""
     
-    def __init__(self, model: str = "gemini-pro", api_key: str = None, max_retries: int = 3):
+    def __init__(self, model: str = "gemini-3-pro-preview", api_key: str = None, max_retries: int = 3):
         """
         Initialize Gemini provider.
         
@@ -311,7 +311,7 @@ class LLMProviderFactory:
         provider_type = provider_type.lower()
         
         if provider_type == "gemini":
-            model = model or "gemini-pro"
+            model = model or "gemini-3-pro-preview"
             return GeminiProvider(model=model, api_key=api_key, max_retries=max_retries)
         elif provider_type == "openai":
             model = model or "gpt-4"

@@ -12,9 +12,9 @@ import hashlib
 from functools import lru_cache
 from typing import Optional, Dict
 import pandas as pd
-from src.data_store import DataStore
-from src.models import StructuredQuery, QueryResult
-from src.config import Config
+from src.data.data_store import DataStore
+from src.core.models import StructuredQuery, QueryResult
+from src.core.config import Config
 
 logger = logging.getLogger(__name__)
 

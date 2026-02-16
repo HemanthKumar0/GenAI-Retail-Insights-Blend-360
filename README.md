@@ -87,32 +87,38 @@ Opens at `http://localhost:8501`. Upload any CSV from `Sales Dataset/` and start
 ## Project Structure
 
 ```
-├── app.py                      # Streamlit web app
+├── app.py                          # Streamlit web app
 ├── src/
-│   ├── orchestrator.py         # Multi-agent coordinator
-│   ├── query_agent.py          # NL → SQL/Pandas parser
-│   ├── extraction_agent.py     # Query executor (DuckDB)
-│   ├── validation_agent.py     # Result validator
-│   ├── data_store.py           # Data loading & schema
-│   ├── llm_provider.py         # OpenAI/Gemini abstraction
-│   ├── context_manager.py      # Conversation memory
-│   ├── prompt_templates.py     # LLM prompt templates
-│   ├── summarization_mode.py   # Summary generation
-│   ├── qa_mode.py              # Q&A processing
-│   ├── rag_system.py           # FAISS semantic search
-│   ├── error_handler.py        # Error management
-│   ├── performance_monitor.py  # Latency & token tracking
-│   ├── models.py               # Data models
-│   ├── config.py               # Configuration
-│   ├── schema_models.py        # Schema definitions
-│   ├── llm_response_validator.py # LLM output validation
-│   └── app_utils.py            # App initialization
-├── tests/                      # 500+ unit & property-based tests
-├── Sales Dataset/              # Sample CSV files (178K+ rows)
-├── screenshots/                # UI screenshots
-├── .env.example                # Environment template
-├── requirements.txt            # Python dependencies
-└── pytest.ini                  # Test configuration
+│   ├── agents/
+│   │   ├── query_agent.py          # NL → SQL/Pandas parser
+│   │   ├── extraction_agent.py     # Query executor (DuckDB)
+│   │   └── validation_agent.py     # Result validator
+│   ├── core/
+│   │   ├── orchestrator.py         # Multi-agent coordinator
+│   │   ├── models.py               # Data models
+│   │   ├── schema_models.py        # Schema definitions
+│   │   └── config.py               # Configuration
+│   ├── llm/
+│   │   ├── llm_provider.py         # OpenAI/Gemini abstraction
+│   │   ├── prompt_templates.py     # LLM prompt templates
+│   │   └── llm_response_validator.py # LLM output validation
+│   ├── modes/
+│   │   ├── qa_mode.py              # Q&A processing
+│   │   └── summarization_mode.py   # Summary generation
+│   ├── data/
+│   │   ├── data_store.py           # Data loading & schema
+│   │   ├── context_manager.py      # Conversation memory
+│   │   └── rag_system.py           # FAISS semantic search
+│   └── utils/
+│       ├── app_utils.py            # App initialization
+│       ├── error_handler.py        # Error management
+│       └── performance_monitor.py  # Latency & token tracking
+├── tests/                          # 500+ unit & property-based tests
+├── Sales Dataset/                  # Sample CSV files (178K+ rows)
+├── screenshots/                    # UI screenshots
+├── .env.example                    # Environment template
+├── requirements.txt                # Python dependencies
+└── pytest.ini                      # Test configuration
 ```
 
 ## Sample Queries
@@ -136,9 +142,9 @@ All options via `.env` file:
 |----------|-------------|---------|
 | `LLM_PROVIDER` | `openai` or `gemini` | `openai` |
 | `OPENAI_API_KEY` | OpenAI API key | — |
-| `OPENAI_MODEL` | Model name | `gpt-4-turbo-preview` |
+| `OPENAI_MODEL` | Model name | `gpt-5.2` |
 | `GOOGLE_API_KEY` | Gemini API key | — |
-| `GEMINI_MODEL` | Model name | `gemini-pro` |
+| `GEMINI_MODEL` | Model name | `gemini-3-pro-preview` |
 | `MAX_RETRIES` | Retry attempts | `3` |
 | `QUERY_TIMEOUT` | Timeout (seconds) | `30` |
 | `CACHE_SIZE` | LRU cache entries | `100` |

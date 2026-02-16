@@ -4,13 +4,13 @@ Utility functions for the Streamlit app.
 This module provides helper functions for initializing the application components.
 """
 
-from orchestrator import Orchestrator
-from query_agent import QueryAgent
-from extraction_agent import ExtractionAgent
-from validation_agent import ValidationAgent
-from data_store import DataStore
-from llm_provider import GeminiProvider, OpenAIProvider
-from config import Config
+from src.core.orchestrator import Orchestrator
+from src.agents.query_agent import QueryAgent
+from src.agents.extraction_agent import ExtractionAgent
+from src.agents.validation_agent import ValidationAgent
+from src.data.data_store import DataStore
+from src.llm.llm_provider import GeminiProvider, OpenAIProvider
+from src.core.config import Config
 
 
 def create_orchestrator() -> Orchestrator:

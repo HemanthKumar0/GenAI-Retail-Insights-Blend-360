@@ -14,9 +14,9 @@ from typing import Dict, Any, Optional
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
-from src.models import StructuredQuery, DataSchema, Message
-from src.llm_provider import LLMProvider
-from src.prompt_templates import PromptTemplates
+from src.core.models import StructuredQuery, DataSchema, Message
+from src.llm.llm_provider import LLMProvider
+from src.llm.prompt_templates import PromptTemplates
 
 logger = logging.getLogger(__name__)
 

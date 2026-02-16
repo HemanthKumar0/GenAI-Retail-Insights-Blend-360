@@ -10,7 +10,7 @@ import logging
 from typing import List, Dict, Any
 import pandas as pd
 import numpy as np
-from src.models import QueryResult, StructuredQuery, ValidationResult, Anomaly
+from src.core.models import QueryResult, StructuredQuery, ValidationResult, Anomaly
 
 logger = logging.getLogger(__name__)
 

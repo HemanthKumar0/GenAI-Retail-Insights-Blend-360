@@ -12,11 +12,11 @@ import pandas as pd
 from typing import Dict, Any, List, Optional
 from datetime import datetime
 
-from src.orchestrator import Orchestrator
-from src.extraction_agent import ExtractionAgent
-from src.llm_provider import LLMProvider
-from src.prompt_templates import PromptTemplates
-from src.models import Response, DataSchema
+from src.core.orchestrator import Orchestrator
+from src.agents.extraction_agent import ExtractionAgent
+from src.llm.llm_provider import LLMProvider
+from src.llm.prompt_templates import PromptTemplates
+from src.core.models import Response, DataSchema
 
 logger = logging.getLogger(__name__)
 

@@ -8,7 +8,7 @@ with truncation and summarization strategies.
 import logging
 from typing import List, Dict, Any, Optional
 from dataclasses import dataclass, field
-from src.models import Message
+from src.core.models import Message
 
 logger = logging.getLogger(__name__)
 
@@ -245,7 +245,7 @@ class ContextManager:
         
         # Create summary using LLM
         try:
-            from src.prompt_templates import PromptTemplates
+            from src.llm.prompt_templates import PromptTemplates
             
             history = [
                 {"role": msg.role, "content": msg.content}

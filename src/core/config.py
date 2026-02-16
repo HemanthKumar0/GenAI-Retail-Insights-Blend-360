@@ -17,11 +17,11 @@ class Config:
     
     # OpenAI Configuration
     OPENAI_API_KEY: Optional[str] = os.getenv("OPENAI_API_KEY")
-    OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "gpt-4-turbo-preview")
+    OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "gpt-5.2")
     
     # Google Gemini Configuration
     GOOGLE_API_KEY: Optional[str] = os.getenv("GOOGLE_API_KEY")
-    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-pro")
+    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-3-pro-preview")
     
     # Application Configuration
     LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO")

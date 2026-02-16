@@ -11,8 +11,8 @@ import logging
 from typing import Optional
 from datetime import datetime
 
-from src.models import Message, Response
-from src.orchestrator import Orchestrator
+from src.core.models import Message, Response
+from src.core.orchestrator import Orchestrator
 
 logger = logging.getLogger(__name__)
 

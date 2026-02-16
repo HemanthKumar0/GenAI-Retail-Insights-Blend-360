@@ -12,16 +12,16 @@ import time
 from typing import Optional, List
 from datetime import datetime
 
-from src.models import (
+from src.core.models import (
     Message, Response, StructuredQuery, QueryResult, 
     ValidationResult, DataSchema
 )
-from src.query_agent import QueryAgent
-from src.extraction_agent import ExtractionAgent
-from src.validation_agent import ValidationAgent
-from src.context_manager import ContextManager
-from src.llm_provider import LLMProvider
-from src.prompt_templates import PromptTemplates
+from src.agents.query_agent import QueryAgent
+from src.agents.extraction_agent import ExtractionAgent
+from src.agents.validation_agent import ValidationAgent
+from src.data.context_manager import ContextManager
+from src.llm.llm_provider import LLMProvider
+from src.llm.prompt_templates import PromptTemplates
 
 logger = logging.getLogger(__name__)
 
@@ -257,7 +257,7 @@ class Orchestrator:
         Returns:
             DataSchema object with table information
         """
-        from src.models import TableSchema, ColumnInfo
+        from src.core.models import TableSchema, ColumnInfo
         
         schema = DataSchema()
         
