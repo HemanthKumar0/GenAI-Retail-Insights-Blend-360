@@ -12,12 +12,12 @@ from unittest.mock import Mock, MagicMock, patch
 from datetime import datetime
 import pandas as pd
 
-from src.orchestrator import Orchestrator
-from src.models import (
+from src.core.orchestrator import Orchestrator
+from src.core.models import (
     StructuredQuery, QueryResult, ValidationResult, Anomaly,
     Response, DataSchema, TableSchema, ColumnInfo, Message
 )
-from src.llm_provider import LLMResponse
+from src.llm.llm_provider import LLMResponse
 
 
 @pytest.fixture

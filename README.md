@@ -10,7 +10,7 @@ A GenAI-powered multi-agent system that lets you query retail sales data using n
 ## Features
 
 - **Natural Language Queries** — Ask questions like "What are the top 10 products by revenue?"
-- **Multi-Agent Architecture** — 4 specialized agents: Query Agent, Extraction Agent, Validation Agent, Orchestrator
+- **Multi-Agent Architecture** — LangGraph-orchestrated pipeline with 3 specialized agents: Query Agent, Extraction Agent, Validation Agent
 - **Two Modes** — Q&A Mode for specific questions, Summarization Mode for trend analysis
 - **Multiple Formats** — CSV, Excel (.xlsx), JSON file support
 - **Smart Caching** — LRU cache for query results + LLM response caching
@@ -28,8 +28,8 @@ A GenAI-powered multi-agent system that lets you query retail sales data using n
                          │
                          ▼
 ┌────────────────────────────────────────────────────┐
-│                   Orchestrator                      │
-│          Coordinates · Retries · Context            │
+│            LangGraph Orchestrator                   │
+│     StateGraph · Retries · Context · Routing        │
 └───┬────────────────┬────────────────┬──────────────┘
     │                │                │
     ▼                ▼                ▼
@@ -94,7 +94,7 @@ Opens at `http://localhost:8501`. Upload any CSV from `Sales Dataset/` and start
 │   │   ├── extraction_agent.py     # Query executor (DuckDB)
 │   │   └── validation_agent.py     # Result validator
 │   ├── core/
-│   │   ├── orchestrator.py         # Multi-agent coordinator
+│   │   ├── orchestrator.py         # LangGraph multi-agent coordinator
 │   │   ├── models.py               # Data models
 │   │   ├── schema_models.py        # Schema definitions
 │   │   └── config.py               # Configuration
@@ -165,6 +165,7 @@ pytest tests/ --cov=src                 # With coverage
 | UI | Streamlit |
 | Data Engine | DuckDB + Pandas |
 | LLM | OpenAI GPT-5.2 / Google Gemini |
+| Multi-Agent Orchestration | LangGraph |
 | Vector Store | FAISS (optional) |
 | Testing | pytest + Hypothesis |
 | Caching | LRU (query results + LLM responses) |
