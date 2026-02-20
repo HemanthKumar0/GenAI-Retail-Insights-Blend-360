@@ -2,8 +2,6 @@
 
 This module defines the core data structures used throughout the application
 for agent communication, query processing, and conversation management.
-
-**Validates: Requirements 11.1, 11.2**
 """
 
 from dataclasses import dataclass, field
@@ -163,20 +161,3 @@ class DataSchema:
     tables: Dict[str, TableSchema] = field(default_factory=dict)
 
 
-@dataclass
-class ConversationState:
-    """
-    Represents the state of an ongoing conversation.
-    
-    Attributes:
-        messages: List of messages in the conversation
-        current_mode: Current operating mode ("summarization" or "qa")
-        loaded_datasets: List of dataset names that have been loaded
-        active_table: Name of the currently active table
-        user_preferences: User-specific preferences and settings
-    """
-    messages: List[Message] = field(default_factory=list)
-    current_mode: str = "qa"
-    loaded_datasets: List[str] = field(default_factory=list)
-    active_table: Optional[str] = None
-    user_preferences: Dict[str, Any] = field(default_factory=dict)

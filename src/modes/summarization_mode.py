@@ -3,8 +3,6 @@ Summarization Mode for generating dataset summaries.
 
 This module implements the SummarizationMode that analyzes loaded datasets
 and generates comprehensive summaries with key metrics, trends, and anomalies.
-
-**Validates: Requirements 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7**
 """
 
 import logging
@@ -79,8 +77,6 @@ class SummarizationMode:
             
         Raises:
             ValueError: If no tables are loaded or table not found
-            
-        **Validates: Requirements 6.1, 6.2, 6.3, 6.4, 6.5, 6.6**
         """
         logger.info(f"Generating summary for table: {table_name or 'default'}")
         
@@ -213,8 +209,6 @@ class SummarizationMode:
             
         Returns:
             Dictionary with calculated metrics
-            
-        **Validates: Requirements 6.1, 6.2**
         """
         df = self.extraction_agent.data_store.tables[table_name]
         metrics = {}
@@ -250,8 +244,6 @@ class SummarizationMode:
             
         Returns:
             Dictionary with YoY growth rates, or None
-            
-        **Validates: Requirement 6.2**
         """
         # Find date column
         date_columns = df.select_dtypes(include=['datetime64']).columns
@@ -324,8 +316,6 @@ class SummarizationMode:
             
         Returns:
             Dictionary with top and bottom performers
-            
-        **Validates: Requirement 6.3**
         """
         df = self.extraction_agent.data_store.tables[table_name]
         performers = {}
@@ -385,8 +375,6 @@ class SummarizationMode:
             
         Returns:
             Dictionary with detected trends and anomalies
-            
-        **Validates: Requirement 6.4**
         """
         df = self.extraction_agent.data_store.tables[table_name]
         trends = {}
@@ -480,8 +468,6 @@ class SummarizationMode:
             
         Returns:
             Formatted summary string
-            
-        **Validates: Requirements 6.5, 6.6**
         """
         logger.info("Formatting summary using LLM")
         
@@ -569,8 +555,6 @@ class SummarizationMode:
             
         Raises:
             ValueError: If fewer than 2 tables provided or tables not found
-            
-        **Validates: Requirement 6.7**
         """
         logger.info(f"Generating comparative summary for {len(table_names)} tables")
         
@@ -691,20 +675,3 @@ Comparative Summary:"""
             # Fallback to basic comparison
             return self._generate_fallback_comparative_summary(table_summaries)
     
-    def _generate_fallback_comparative_summary(
-        self,
-        table_summaries: Dict[str, Dict[str, Any]]
-    ) -> str:
-        """Generate basic fallback comparative summary."""
-        summary_parts = ["Comparative Dataset Summary\n"]
-        
-        for table_name, summary_data in table_summaries.items():
-            summary_parts.append(f"\n{table_name}:")
-            summary_parts.append(f"  Records: {summary_data['dataset_info']['row_count']:,}")
-            summary_parts.append(f"  Columns: {summary_data['dataset_info']['column_count']}")
-            
-            if summary_data['metrics']:
-                first_metric = list(summary_data['metrics'].items())[0]
-                summary_parts.append(f"  {first_metric[0]}: {first_metric[1]:,.2f}")
-        
-        return "\n".join(summary_parts)

@@ -3,8 +3,6 @@ Orchestrator module using LangGraph for multi-agent coordination.
 
 This module implements the Orchestrator using LangGraph's StateGraph to coordinate
 communication between QueryAgent, ExtractionAgent, and ValidationAgent.
-
-**Validates: Requirements 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7**
 """
 
 import logging
@@ -337,8 +335,6 @@ class Orchestrator:
 
         Raises:
             ValueError: If mode is invalid
-
-        **Validates: Requirements 3.1, 3.2, 3.3, 3.4, 3.5, 3.6**
         """
         if mode not in ["summarization", "qa"]:
             raise ValueError(f"Invalid mode: {mode}. Must be 'summarization' or 'qa'")
@@ -446,8 +442,6 @@ class Orchestrator:
     def _log_communication(self, sender: str, receiver: str, message: str) -> None:
         """
         Log inter-agent communication.
-
-        **Validates: Requirement 3.7**
         """
         log_entry = {
             "timestamp": datetime.now().isoformat(),
@@ -466,8 +460,6 @@ class Orchestrator:
     ) -> str:
         """
         Request QueryAgent to reformulate query based on validation failures.
-
-        **Validates: Requirement 3.5**
         """
         issues_summary = "\n".join(validation_result.issues[:3])
 
@@ -505,8 +497,6 @@ Please provide a reformulated query that addresses these issues."""
     ) -> Response:
         """
         Format final response using LLM.
-
-        **Validates: Requirement 7.2**
         """
         logger.info("Formatting response using LLM")
 
@@ -624,8 +614,6 @@ Please try rephrasing your query or check if the data contains the information y
     def get_communication_log(self) -> List[dict]:
         """
         Get inter-agent communication log.
-
-        **Validates: Requirement 3.7**
         """
         return self.communication_log
 

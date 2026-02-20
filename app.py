@@ -3,8 +3,6 @@ Retail Insights Assistant - Streamlit User Interface
 
 This is the main Streamlit application that provides a web-based chat interface
 for interacting with the Retail Insights Assistant.
-
-**Validates: Requirements 14.1, 14.2, 14.3, 14.4, 14.5, 14.6**
 """
 
 import streamlit as st
@@ -63,8 +61,6 @@ st.markdown("""
 def initialize_session_state():
     """
     Initialize Streamlit session state variables.
-    
-    **Validates: Requirement 11.4**
     """
     if 'orchestrator' not in st.session_state:
         st.session_state.orchestrator = create_orchestrator()
@@ -94,8 +90,6 @@ def display_header():
 def display_sidebar():
     """
     Display the sidebar with file upload and mode selection.
-    
-    **Validates: Requirements 14.3, 14.4**
     """
     with st.sidebar:
         st.header("⚙️ Configuration")
@@ -180,8 +174,6 @@ def display_sidebar():
 def display_chat_history():
     """
     Display the conversation history.
-    
-    **Validates: Requirement 14.2**
     """
     for msg in st.session_state.messages:
         role = msg["role"]
@@ -214,8 +206,6 @@ def display_chat_history():
 def process_user_input(user_input: str):
     """
     Process user input and generate response.
-    
-    **Validates: Requirements 14.5, 14.6**
     """
     # Add user message to history
     st.session_state.messages.append({

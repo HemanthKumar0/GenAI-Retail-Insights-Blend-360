@@ -111,27 +111,6 @@ Now generate the structured operation for the user's query. Return ONLY valid JS
 
 Output:"""
 
-    # Response formatting prompt
-    RESPONSE_FORMATTING_PROMPT = """You are a helpful data analyst assistant. Format the query results into a clear, natural language response.
-
-User Query: {query}
-
-Query Results:
-{results}
-
-Data Context:
-{context}
-
-Instructions:
-1. Provide a clear, concise answer to the user's question
-2. Reference specific data points from the results
-3. Include relevant numbers and percentages
-4. Highlight key insights or trends
-5. Keep the response conversational and easy to understand
-6. If the results are empty, explain why and suggest alternatives
-
-Response:"""
-
     # Summarization prompt
     SUMMARIZATION_PROMPT = """You are a business intelligence analyst. Generate a comprehensive summary of the sales dataset.
 
@@ -159,21 +138,6 @@ Format the summary with the following sections:
 
 Summary:"""
 
-    # Ambiguity clarification prompt
-    AMBIGUITY_CLARIFICATION_PROMPT = """You are a helpful assistant. The user's query is ambiguous and needs clarification.
-
-User Query: {query}
-
-Available Schema:
-{schema}
-
-Ambiguity Detected:
-{ambiguity_reason}
-
-Generate 2-3 clarifying questions to help the user refine their query. Be specific and reference the available data.
-
-Clarifying Questions:"""
-
     # Context summarization prompt (for managing conversation history)
     CONTEXT_SUMMARIZATION_PROMPT = """Summarize the following conversation history into a concise context summary that preserves key information.
 
@@ -187,44 +151,6 @@ Create a brief summary (max 200 words) that captures:
 4. Current dataset context
 
 Summary:"""
-
-    # Error explanation prompt
-    ERROR_EXPLANATION_PROMPT = """You are a helpful assistant. Explain the following error to the user in simple terms and suggest how to fix it.
-
-Error Type: {error_type}
-Error Message: {error_message}
-
-User Query: {query}
-
-Provide:
-1. A user-friendly explanation of what went wrong
-2. Possible reasons for the error
-3. 2-3 specific suggestions for how to rephrase or fix the query
-4. An example of a corrected query if applicable
-
-Explanation:"""
-
-    # Time period resolution prompt
-    TIME_RESOLUTION_PROMPT = """Convert the following time reference into specific date ranges.
-
-Time Reference: {time_reference}
-Current Date: {current_date}
-Available Date Range: {available_range}
-
-Examples:
-- "Q4" → October 1 to December 31 of current year
-- "last month" → First day to last day of previous month
-- "YoY" → Same period in previous year
-- "last quarter" → Previous 3-month period
-
-Return JSON format:
-{{
-  "start_date": "YYYY-MM-DD",
-  "end_date": "YYYY-MM-DD",
-  "description": "Human-readable description"
-}}
-
-Output:"""
 
     @staticmethod
     def format_query_parsing_prompt(query: str, schema: Dict[str, Any], 
@@ -247,28 +173,6 @@ Output:"""
             schema=schema_str,
             context=context_str,
             query=query
-        )
-    
-    @staticmethod
-    def format_response_prompt(query: str, results: Any, context: str = "") -> str:
-        """
-        Format response formatting prompt.
-        
-        Args:
-            query: User's original query
-            results: Query results (DataFrame, dict, etc.)
-            context: Additional context
-            
-        Returns:
-            Formatted prompt string
-        """
-        results_str = PromptTemplates._format_results(results)
-        context_str = context if context else "No additional context"
-        
-        return PromptTemplates.RESPONSE_FORMATTING_PROMPT.format(
-            query=query,
-            results=results_str,
-            context=context_str
         )
     
     @staticmethod
@@ -331,28 +235,6 @@ Response:"""
         )
     
     @staticmethod
-    def format_ambiguity_prompt(query: str, schema: Dict[str, Any], 
-                               ambiguity_reason: str) -> str:
-        """
-        Format ambiguity clarification prompt.
-        
-        Args:
-            query: User's query
-            schema: Database schema
-            ambiguity_reason: Reason for ambiguity
-            
-        Returns:
-            Formatted prompt string
-        """
-        schema_str = PromptTemplates._format_schema(schema)
-        
-        return PromptTemplates.AMBIGUITY_CLARIFICATION_PROMPT.format(
-            query=query,
-            schema=schema_str,
-            ambiguity_reason=ambiguity_reason
-        )
-    
-    @staticmethod
     def format_context_summary_prompt(history: List[Dict[str, str]]) -> str:
         """
         Format context summarization prompt.
@@ -369,45 +251,6 @@ Response:"""
             history=history_str
         )
     
-    @staticmethod
-    def format_error_explanation_prompt(error_type: str, error_message: str, 
-                                       query: str) -> str:
-        """
-        Format error explanation prompt.
-        
-        Args:
-            error_type: Type of error
-            error_message: Error message
-            query: User's query that caused the error
-            
-        Returns:
-            Formatted prompt string
-        """
-        return PromptTemplates.ERROR_EXPLANATION_PROMPT.format(
-            error_type=error_type,
-            error_message=error_message,
-            query=query
-        )
-    
-    @staticmethod
-    def format_time_resolution_prompt(time_reference: str, current_date: str,
-                                     available_range: str) -> str:
-        """
-        Format time period resolution prompt.
-        
-        Args:
-            time_reference: Time reference to resolve (e.g., "Q4", "last month")
-            current_date: Current date
-            available_range: Available date range in dataset
-            
-        Returns:
-            Formatted prompt string
-        """
-        return PromptTemplates.TIME_RESOLUTION_PROMPT.format(
-            time_reference=time_reference,
-            current_date=current_date,
-            available_range=available_range
-        )
     
     # Helper methods for formatting
     
@@ -431,21 +274,6 @@ Response:"""
             lines.append("")
         
         return "\n".join(lines)
-    
-    @staticmethod
-    def _format_results(results: Any) -> str:
-        """Format query results into readable string."""
-        import pandas as pd
-        
-        if isinstance(results, pd.DataFrame):
-            if len(results) == 0:
-                return "No results found"
-            # Show first 10 rows and summary
-            return f"{results.head(10).to_string()}\n\nTotal rows: {len(results)}"
-        elif isinstance(results, dict):
-            return "\n".join(f"{k}: {v}" for k, v in results.items())
-        else:
-            return str(results)
     
     @staticmethod
     def _format_dataset_info(dataset_info: Dict[str, Any]) -> str:

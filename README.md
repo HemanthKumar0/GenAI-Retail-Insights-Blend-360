@@ -22,14 +22,14 @@ A GenAI-powered multi-agent system that lets you query retail sales data using n
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│                  Streamlit UI                        │
+│                  Streamlit UI                       │
 │         File Upload · Chat · Mode Select            │
 └────────────────────────┬────────────────────────────┘
                          │
                          ▼
 ┌────────────────────────────────────────────────────┐
-│            LangGraph Orchestrator                   │
-│     StateGraph · Retries · Context · Routing        │
+│            LangGraph Orchestrator                  │
+│     StateGraph · Retries · Context · Routing       │
 └───┬────────────────┬────────────────┬──────────────┘
     │                │                │
     ▼                ▼                ▼
@@ -40,10 +40,10 @@ A GenAI-powered multi-agent system that lets you query retail sales data using n
 └────┬───┘    └─────┬─────┘    └─────┬──────┘
      │              │                │
      └──────────────▼────────────────┘
-              ┌─────────────┐
-              │ LLM Provider│
+              ┌──────────────┐
+              │ LLM Provider │
               │ OpenAI/Gemini│
-              └─────────────┘
+              └──────────────┘
 ```
 
 
@@ -113,12 +113,10 @@ Opens at `http://localhost:8501`. Upload any CSV from `Sales Dataset/` and start
 │       ├── app_utils.py            # App initialization
 │       ├── error_handler.py        # Error management
 │       └── performance_monitor.py  # Latency & token tracking
-├── tests/                          # 500+ unit & property-based tests
 ├── Sales Dataset/                  # Sample CSV files (178K+ rows)
 ├── screenshots/                    # UI screenshots
 ├── .env.example                    # Environment template
 ├── requirements.txt                # Python dependencies
-└── pytest.ini                      # Test configuration
 ```
 
 ## Sample Queries

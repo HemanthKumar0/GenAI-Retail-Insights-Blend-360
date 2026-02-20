@@ -296,36 +296,4 @@ class ContextManager:
         return stats
 
 
-def truncate_text_to_tokens(text: str, max_tokens: int, token_counter) -> str:
-    """
-    Truncate text to fit within token limit.
-    
-    Args:
-        text: Text to truncate
-        max_tokens: Maximum tokens allowed
-        token_counter: Function to count tokens
-        
-    Returns:
-        Truncated text
-    """
-    current_tokens = token_counter(text)
-    
-    if current_tokens <= max_tokens:
-        return text
-    
-    # Binary search for the right length
-    left, right = 0, len(text)
-    result = text
-    
-    while left < right:
-        mid = (left + right + 1) // 2
-        truncated = text[:mid]
-        tokens = token_counter(truncated)
-        
-        if tokens <= max_tokens:
-            result = truncated
-            left = mid
-        else:
-            right = mid - 1
-    
-    return result + "..."
+

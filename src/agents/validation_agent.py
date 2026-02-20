@@ -2,8 +2,6 @@
 
 This module implements the ValidationAgent responsible for verifying
 query results for accuracy, consistency, and data quality.
-
-**Validates: Requirements 5.1, 5.2, 5.3, 5.4, 5.5**
 """
 
 import logging
@@ -56,8 +54,6 @@ class ValidationAgent:
             
         Returns:
             ValidationResult with pass/fail status and any issues found
-            
-        **Validates: Requirements 5.1, 5.2, 5.3, 5.5**
         """
         if not isinstance(results, QueryResult):
             raise ValueError("results must be a QueryResult instance")
@@ -136,8 +132,6 @@ class ValidationAgent:
             
         Returns:
             List of data type issues found
-            
-        **Validates: Requirement 5.1**
         """
         issues = []
         
@@ -188,8 +182,6 @@ class ValidationAgent:
             
         Returns:
             Tuple of (issues list, anomalies list)
-            
-        **Validates: Requirement 5.2**
         """
         issues = []
         anomalies = []
@@ -279,8 +271,6 @@ class ValidationAgent:
             
         Returns:
             List of issues found
-            
-        **Validates: Requirement 5.3**
         """
         issues = []
         
@@ -343,8 +333,6 @@ class ValidationAgent:
             
         Returns:
             Tuple of (issues list, anomalies list)
-            
-        **Validates: Requirement 5.4**
         """
         issues = []
         anomalies = []
@@ -480,151 +468,6 @@ class ValidationAgent:
         confidence = max(0.0, min(1.0, confidence))
         
         return confidence
-    def _get_default_business_rules(self) -> Dict[str, Any]:
-        """
-        Get default business rules configuration.
-
-        Returns:
-            Dictionary containing default business rules
-        """
-        return {
-            'valid_categories': [
-                'Electronics', 'Clothing', 'Food', 'Home', 'Sports',
-                'Books', 'Toys', 'Beauty', 'Automotive', 'Garden'
-            ],
-            'check_sales_order_match': True,
-            'max_sales_per_order': 1000000,  # Maximum reasonable sales amount per order
-            'min_sales_per_order': 0,  # Minimum sales amount
-        }
-
-    def check_business_rules(self, results: QueryResult) -> List[Anomaly]:
-        """
-        Check results against configured business rules.
-
-        Validates:
-        - Sales totals match order counts (if applicable)
-        - Category values are in the known valid list
-        - Other configurable business rules
-
-        Args:
-            results: Query results to validate
-
-        Returns:
-            List of anomalies found during business rule validation
-
-        **Validates: Requirement 5.5**
-        """
-        anomalies = []
-        df = results.data
-
-        if df.empty:
-            return anomalies
-
-        # Rule 1: Validate category values against known list
-        if 'category' in df.columns:
-            valid_categories = self.business_rules.get('valid_categories', [])
-            if valid_categories:
-                invalid_mask = ~df['category'].isin(valid_categories)
-                if invalid_mask.any():
-                    invalid_count = invalid_mask.sum()
-                    invalid_rows = df[invalid_mask].index.tolist()
-                    invalid_values = df.loc[invalid_mask, 'category'].unique().tolist()
-
-                    anomalies.append(Anomaly(
-                        type="invalid_category",
-                        description=(
-                            f"Found {invalid_count} rows with invalid category values. "
-                            f"Invalid categories: {invalid_values[:5]}"
-                        ),
-                        severity="error",
-                        affected_rows=invalid_rows[:10]
-                    ))
-                    logger.warning(f"Business rule violation: {invalid_count} invalid categories found")
-
-        # Rule 2: Check sales totals match order counts
-        # This checks if the relationship between sales and orders is reasonable
-        if self.business_rules.get('check_sales_order_match', False):
-            if 'sales' in df.columns and 'order_count' in df.columns:
-                # Check if sales and order_count have a reasonable relationship
-                # Sales should be positive when order_count is positive
-                if pd.api.types.is_numeric_dtype(df['sales']) and pd.api.types.is_numeric_dtype(df['order_count']):
-                    # Check for cases where order_count > 0 but sales <= 0
-                    mismatch_mask = (df['order_count'] > 0) & (df['sales'] <= 0)
-                    if mismatch_mask.any():
-                        mismatch_count = mismatch_mask.sum()
-                        mismatch_rows = df[mismatch_mask].index.tolist()
-
-                        anomalies.append(Anomaly(
-                            type="sales_order_mismatch",
-                            description=(
-                                f"Found {mismatch_count} rows where order_count > 0 but sales <= 0. "
-                                f"Sales should be positive when orders exist."
-                            ),
-                            severity="error",
-                            affected_rows=mismatch_rows[:10]
-                        ))
-                        logger.warning(f"Business rule violation: {mismatch_count} sales/order mismatches found")
-
-                    # Check for cases where sales > 0 but order_count <= 0
-                    reverse_mismatch_mask = (df['sales'] > 0) & (df['order_count'] <= 0)
-                    if reverse_mismatch_mask.any():
-                        reverse_count = reverse_mismatch_mask.sum()
-                        reverse_rows = df[reverse_mismatch_mask].index.tolist()
-
-                        anomalies.append(Anomaly(
-                            type="sales_order_mismatch",
-                            description=(
-                                f"Found {reverse_count} rows where sales > 0 but order_count <= 0. "
-                                f"Orders should exist when sales are recorded."
-                            ),
-                            severity="error",
-                            affected_rows=reverse_rows[:10]
-                        ))
-                        logger.warning(f"Business rule violation: {reverse_count} reverse sales/order mismatches found")
-
-        # Rule 3: Check sales amounts are within reasonable bounds
-        if 'sales' in df.columns:
-            if pd.api.types.is_numeric_dtype(df['sales']):
-                max_sales = self.business_rules.get('max_sales_per_order', float('inf'))
-                min_sales = self.business_rules.get('min_sales_per_order', 0)
-
-                # Check for sales exceeding maximum
-                if max_sales < float('inf'):
-                    over_max_mask = df['sales'] > max_sales
-                    if over_max_mask.any():
-                        over_count = over_max_mask.sum()
-                        over_rows = df[over_max_mask].index.tolist()
-
-                        anomalies.append(Anomaly(
-                            type="sales_out_of_bounds",
-                            description=(
-                                f"Found {over_count} rows with sales exceeding maximum allowed "
-                                f"value of {max_sales}"
-                            ),
-                            severity="warning",
-                            affected_rows=over_rows[:10]
-                        ))
-                        logger.warning(f"Business rule violation: {over_count} sales values exceed maximum")
-
-                # Check for sales below minimum
-                under_min_mask = df['sales'] < min_sales
-                if under_min_mask.any():
-                    under_count = under_min_mask.sum()
-                    under_rows = df[under_min_mask].index.tolist()
-
-                    anomalies.append(Anomaly(
-                        type="sales_out_of_bounds",
-                        description=(
-                            f"Found {under_count} rows with sales below minimum allowed "
-                            f"value of {min_sales}"
-                        ),
-                        severity="error",
-                        affected_rows=under_rows[:10]
-                    ))
-                    logger.warning(f"Business rule violation: {under_count} sales values below minimum")
-
-        logger.info(f"Business rule validation found {len(anomalies)} anomalies")
-        return anomalies
 
     def _get_default_business_rules(self) -> Dict[str, Any]:
         """
@@ -657,8 +500,6 @@ class ValidationAgent:
             
         Returns:
             List of anomalies found during business rule validation
-            
-        **Validates: Requirement 5.5**
         """
         anomalies = []
         df = results.data

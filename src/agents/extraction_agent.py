@@ -2,8 +2,6 @@
 
 This module implements the ExtractionAgent responsible for executing
 structured queries against the data store and retrieving results efficiently.
-
-**Validates: Requirements 4.1, 4.2, 4.3, 4.4, 4.5, 4.6**
 """
 
 import logging
@@ -69,8 +67,6 @@ class ExtractionAgent:
         Raises:
             ValueError: If operation_type is unsupported
             TimeoutError: If query execution exceeds timeout limit
-            
-        **Validates: Requirements 4.1, 4.2, 4.3, 4.4, 4.5**
         """
         if not isinstance(query, StructuredQuery):
             raise ValueError("query must be a StructuredQuery instance")
@@ -156,8 +152,6 @@ class ExtractionAgent:
             
         Returns:
             Pandas DataFrame with results
-            
-        **Validates: Requirement 4.1, 4.6**
         """
         logger.debug(f"Executing SQL: {query.operation[:100]}...")
         
@@ -185,8 +179,6 @@ class ExtractionAgent:
             
         Raises:
             ValueError: If table not found or operation fails
-            
-        **Validates: Requirement 4.2, 4.6**
         """
         logger.debug(f"Executing Pandas operation: {query.operation[:100]}...")
         
@@ -242,8 +234,6 @@ class ExtractionAgent:
             
         Returns:
             Cache key string
-            
-        **Validates: Requirement 4.5**
         """
         # Create a string representation of the query
         query_str = f"{query.operation_type}:{query.operation}:{str(query.parameters)}"
@@ -260,8 +250,6 @@ class ExtractionAgent:
             
         Returns:
             Cached QueryResult or None if not found
-            
-        **Validates: Requirement 4.5**
         """
         if cache_key in self._query_cache:
             # Update access order (move to end for LRU)
@@ -285,8 +273,6 @@ class ExtractionAgent:
         Args:
             cache_key: Cache key for the result
             result: QueryResult to cache
-            
-        **Validates: Requirement 4.5**
         """
         # If cache is full, evict least recently used
         if len(self._query_cache) >= self.cache_size and cache_key not in self._query_cache:

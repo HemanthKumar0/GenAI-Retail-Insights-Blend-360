@@ -3,8 +3,6 @@ Q&A Mode for conversational data analysis.
 
 This module implements the Q&A mode that enables users to have natural
 language conversations about their data with context-aware responses.
-
-**Validates: Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7**
 """
 
 import logging
@@ -27,8 +25,6 @@ class QAMode:
     - Ask follow-up questions using conversation context
     - Request clarifications with detailed explanations
     - Maintain conversation history
-    
-    **Validates: Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7**
     """
     
     def __init__(self, orchestrator: Orchestrator):
@@ -60,8 +56,6 @@ class QAMode:
             
         Raises:
             ValueError: If question is empty or invalid
-            
-        **Validates: Requirements 7.1, 7.2, 7.3, 7.4, 7.5**
         """
         if not question or not question.strip():
             raise ValueError("Question cannot be empty")
@@ -112,8 +106,6 @@ class QAMode:
             
         Returns:
             True if this is a clarification request
-            
-        **Validates: Requirement 7.6**
         """
         clarification_keywords = [
             "explain", "clarify", "what do you mean", "can you elaborate",
@@ -138,8 +130,6 @@ class QAMode:
             
         Returns:
             Response with detailed explanation
-            
-        **Validates: Requirement 7.6**
         """
         logger.info("Handling clarification request")
         
@@ -218,8 +208,6 @@ Please provide a more detailed explanation with additional context and data evid
         
         Returns:
             List of Message objects representing the conversation
-            
-        **Validates: Requirement 7.7**
         """
         return self.orchestrator.get_conversation_history()
     
